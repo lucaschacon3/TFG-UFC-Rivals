@@ -4,44 +4,44 @@
 
 # 🥊 UFC Rivals
 
-**Full Stack Web App — Proyecto final DAW**  
-Plataforma web integral para análisis y simulación de combates UFC con integración de inteligencia artificial. Permite a los usuarios registrarse, autenticarse y disfrutar de predicciones interactivas de peleas.
+**Full Stack Web App — Final Project**  
+A comprehensive web platform for UFC fight analysis and simulation powered by AI. Users can register, authenticate, and generate interactive fight predictions with advanced analytics.
 
 ---
 
-## 🚀 Características principales
+## 🚀 Key Features
 
-- **Arquitectura MVC con Thymeleaf** para vistas dinámicas y servidor Java.
-- **Autenticación segura** con Spring Security (login clásico y OAuth).
-- **Simulaciones interactivas** de combates UFC usando la API de OpenAI.
-- **Visualización de estadísticas** de luchadores con gráficos dinámicos.
-- **Notificaciones en tiempo real** y alertas personalizadas.
-- **Diseño responsive** y moderno con Tailwind CSS.
-
----
-
-## 🛠️ Tecnologías utilizadas
-
-- **Backend:** Java 21 • Spring Boot • Spring Security  
-- **Frontend:** Thymeleaf • Tailwind CSS • Chart.js • SweetAlert  
-- **Base de datos:** PostgreSQL  
-- **IA:** OpenAI API  
+- **MVC architecture with Thymeleaf** for dynamic server-side rendering.
+- **Secure authentication** with Spring Security (classic login and OAuth providers).
+- **AI-powered fight simulations** using the OpenAI API.
+- **Interactive statistics visualization** with fighter data and dynamic charts.
+- **Real-time alerts and notifications** for user engagement.
+- **Responsive and modern UI** built with Tailwind CSS.
 
 ---
 
-## ⚙️ Requisitos previos
+## 🛠️ Tech Stack
+
+**Backend:** Java 21 • Spring Boot • Spring Security  
+**Frontend:** Thymeleaf • Tailwind CSS • Chart.js • SweetAlert  
+**Database:** PostgreSQL  
+**AI Integration:** OpenAI API  
+
+---
+
+## ⚙️ Prerequisites
 
 - **Java 21**  
 - **Maven** 3.9+  
 - **PostgreSQL** 14+  
-- Clave API de **OpenAI**  
-- Navegador moderno compatible con ES6+
+- **OpenAI API key**  
+- A modern browser with ES6 support  
 
 ---
 
-## 🏗️ Instalación y ejecución local
+## 🏗️ Installation & Local Setup
 
-1. **Clonar el repositorio**
+1. **Clone the repository**
 ```bash
-git clone https://github.com/usuario/ufc-rivals.git
+git clone https://github.com/your-username/ufc-rivals.git
 cd ufc-rivals

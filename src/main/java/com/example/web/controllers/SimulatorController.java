@@ -52,9 +52,6 @@ public class SimulatorController {
                 model.addAttribute("fighter1", fighter1);
                 model.addAttribute("fighter2", fighter2);
 
-                String prompt = "Dame una breve descripción del peleador " +
-                        fighter1.getName() + " " + fighter1.getSurname();
-
             } else {
                 model.addAttribute("error", "No se encontraron los peleadores.");
             }

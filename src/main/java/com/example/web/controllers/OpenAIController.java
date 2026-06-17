@@ -1,7 +1,8 @@
 package com.example.web.controllers;
 
-
-import com.example.web.services.OpenAIClientService;
+import com.example.web.services.OllamaClientService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,14 +10,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/openai")
+@RequestMapping("/api/ai")
 public class OpenAIController {
 
+    private static final Logger log = LoggerFactory.getLogger(OpenAIController.class);
 
-    private final OpenAIClientService openAIService;
+    private final OllamaClientService ollamaService;
 
-    public OpenAIController(OpenAIClientService openAIService) {
-        this.openAIService = openAIService;
+    public OpenAIController(OllamaClientService ollamaService) {
+        this.ollamaService = ollamaService;
     }
 
     @PostMapping("/chat")
@@ -24,15 +26,15 @@ public class OpenAIController {
         String prompt = body.get("prompt");
 
         try {
-            String response = openAIService.getChatCompletion(prompt);
+            String response = ollamaService.getChatCompletion(prompt);
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {
-            System.err.println("Error in /chat: " + e.getMessage());
+            log.error("Error in /chat: {}", e.getMessage(), e);
 
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error while processing chat request: " + e.getMessage()+" reload the page please");
+                    .body("Error while processing chat request: " + e.getMessage() + " reload the page please");
         }
     }
 

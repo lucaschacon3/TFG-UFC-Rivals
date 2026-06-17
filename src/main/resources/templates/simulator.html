@@ -20,13 +20,13 @@
             At the end, name the winner.
             Answer in English.`;
 
-            async function askOpenAI(prompt) {
+            async function askAI(prompt) {
                 // Mostrar loader
                 document.getElementById('loader').style.display = 'block';
-                document.getElementById('openai-result').innerText = '';
+                document.getElementById('ai-result').innerText = '';
 
                 try {
-                    const response = await fetch('/api/openai/chat', {
+                    const response = await fetch('/api/ai/chat', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -35,17 +35,17 @@
                     });
 
                     const text = await response.text();
-                    document.getElementById('openai-result').innerText = text;
+                    document.getElementById('ai-result').innerText = text;
                 } catch (error) {
-                    document.getElementById('openai-result').innerText = 'Error contacting OpenAI';
-                    console.error('OpenAI error:', error);
+                    document.getElementById('ai-result').innerText = 'Error contacting AI';
+                    console.error('AI error:', error);
                 } finally {
                     // Ocultar loader
                     document.getElementById('loader').style.display = 'none';
                 }
             }
 
-            askOpenAI(prompt);
+            askAI(prompt);
 
 
             const fighter1Label = /*[[${fighter1.nickname}]]*/ 'Fighter 1';
@@ -429,7 +429,7 @@
                             </div>
                         </div>
 
-                        <p class="mt-4 text-center text-gray-600" id="openai-result"></p>
+                        <p class="mt-4 text-center text-gray-600" id="ai-result"></p>
                     </div>
                 </div>
 

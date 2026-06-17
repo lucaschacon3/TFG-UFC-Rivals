@@ -82,6 +82,8 @@ TFG-UFC-Rivals/
 ├── docker-compose.yml            # 4 servicios: db, ollama, ollama-init, app
 ├── pom.xml
 ├── mvnw / mvnw.cmd               # Maven Wrapper
+├── db/
+│   └── init.sql                  # Schema + seed data (cargado por PostgreSQL al iniciar)
 │
 ├── src/main/java/com/example/web/
 │   ├── WebApplication.java
@@ -116,9 +118,6 @@ TFG-UFC-Rivals/
 │
 ├── src/main/resources/
 │   ├── application.properties           # Configuración principal (PostgreSQL + Ollama)
-│   ├── db/
-│   │   ├── schema.sql                   # DDL (4 tablas)
-│   │   └── data.sql                     # Seed data (2 usuarios + 80+ luchadores)
 │   ├── static/
 │   │   ├── css/index.css
 │   │   ├── fonts/sonic-extra-bold-bt.ttf
@@ -521,7 +520,7 @@ El modelo de IA se descarga automáticamente en `ollama-init`. Para cambiarlo, e
 
 ### Añadir más luchadores
 
-Edita `src/main/resources/db/data.sql` y añade nuevas sentencias `INSERT INTO fighter (...)`. Los datos se cargan la primera vez que se inicia PostgreSQL con un volumen vacío. Si ya existen, elimina el volumen con `docker compose down -v`.
+Edita `db/init.sql` y añade nuevas filas al `INSERT INTO fighter (...) ... ON CONFLICT (id_fighter) DO NOTHING`. Los datos se cargan la primera vez que se inicia PostgreSQL con un volumen vacío. Si ya existen, elimina el volumen con `docker compose down -v`.
 
 ---
 

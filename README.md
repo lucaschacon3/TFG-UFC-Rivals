@@ -13,20 +13,20 @@ Plataforma web para el análisis y simulación de peleas de UFC, impulsada por i
 
 ## Índice
 
-1. [Capturas de pantalla](#-capturas-de-pantalla)
-2. [Características principales](#-características-principales)
-3. [Stack tecnológico](#-stack-tecnológico)
-4. [Estructura del proyecto](#-estructura-del-proyecto)
-5. [Guía de instalación](#-guía-de-instalación)
-6. [Configuración](#-configuración)
-7. [Recorrido por las páginas](#-recorrido-por-las-páginas)
-8. [API REST](#-api-rest)
-9. [Base de datos](#-base-de-datos)
-10. [Seguridad](#-seguridad)
-11. [Arquitectura Docker](#-arquitectura-docker)
-12. [Personalización](#-personalización)
-
+1. [Capturas de pantalla](#capturas-de-pantalla)
+2. [Características principales](#características-principales)
+3. [Stack tecnológico](#stack-tecnológico)
+4. [Estructura del proyecto](#estructura-del-proyecto)
+5. [Guía de instalación](#guía-de-instalación)
+6. [Configuración](#configuración)
+7. [Recorrido por las páginas](#recorrido-por-las-páginas)
+8. [API REST](#api-rest)
+9. [Base de datos](#base-de-datos)
+10. [Seguridad](#seguridad)
+11. [Arquitectura Docker](#arquitectura-docker)
 ---
+
+
 
 ## Capturas de pantalla
 

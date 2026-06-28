@@ -32,7 +32,7 @@ Plataforma web para el análisis y simulación de peleas de UFC, impulsada por i
 
 | Home | Fighters |
 |:---:|:---:|
-| ![alt text](docs/2.png) | ![alt text](docs/2.png) |
+| ![alt text](docs/1.png) | ![alt text](docs/2.png) |
 
 | Simulator | Ranking |
 |:---:|:---:|

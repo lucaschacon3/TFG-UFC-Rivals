@@ -1,0 +1,23 @@
+<!-- templates/error/400.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/head :: head}"></head>
+<body class="bg-gray-100 text-center min-h-screen flex flex-col">
+
+<div th:replace="~{fragments/preloader :: preloader}"></div>
+<header th:replace="~{fragments/header :: header}"></header>
+
+<main class="flex-grow flex items-center justify-center mb-4">
+    <div>
+        <h1 class="text-6xl font-bold text-yellow-500">404</h1>
+        <p class="text-2xl mt-4 text-gray-700">Bad Request - Not Found</p>
+        <p class="mt-2 text-gray-600">It seems like something went wrong with your request.</p>
+        <a th:href="@{/}" class="mt-6 inline-block text-blue-600 hover:underline text-lg">← Return to Home</a>
+        <img class="mx-auto my-16" th:src="@{/img/404_boxing.gif}" alt="Waiting for fight"/>
+
+    </div>
+</main>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+</body>
+</html>

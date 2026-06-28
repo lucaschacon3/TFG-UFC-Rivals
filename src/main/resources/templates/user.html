@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <th:block th:replace="~{fragments/head :: head}"></th:block>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        document.addEventListener('DOMContentLoaded', () => {
+
+            document.getElementById('delete-account').addEventListener('click', () => {
+                Swal.fire({
+                    title: 'Delete Account?',
+                    text: 'Please confirm your password to delete your account:',
+                    icon: 'warning',
+                    input: 'password',
+                    inputPlaceholder: 'Enter your current password',
+                    inputAttributes: {
+                        autocapitalize: 'off',
+                        autocorrect: 'off'
+                    },
+                    showCancelButton: true,
+                    confirmButtonColor: '#E50F0F',
+                    cancelButtonColor: '#96979a',
+                    confirmButtonText: 'Yes, delete it',
+                    cancelButtonText: 'No, thanks',
+                    customClass: {
+                        popup: 'rounded-2xl',
+                        title: 'text-lg',
+                        confirmButton: 'px-4 py-2',
+                        cancelButton: 'px-4 py-2',
+                    },
+                    preConfirm: (password) => {
+                        if (!password) {
+                            Swal.showValidationMessage('Password is required');
+                            return false;
+                        }
+                        return password;
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed && result.value) {
+                        const password = result.value;
+
+                        fetch('/user/delete', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ current_password: password })
+                        })
+                            .then(async response => {
+                                const text = await response.text();
+                                if (!response.ok) {
+                                    throw new Error(text || "Something went wrong");
+                                }
+                                return text;
+                            })
+                            .then(() => {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Deleted!',
+                                    text: 'Your account has been deleted. Bye.',
+                                    confirmButtonColor: '#E50F0F'
+                                }).then(() => {
+                                    window.location.href = "/logout";
+                                });
+                            })
+                            .catch(error => {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error!',
+                                    text: error.message || 'Failed to delete the account.',
+                                    confirmButtonColor: '#E50F0F'
+                                });
+                            });
+
+                    }
+                });
+            });
+
+
+            document.getElementById('save-changes').addEventListener('click', function () {
+                Swal.fire({
+                    title: 'Confirm Password',
+                    input: 'password',
+                    inputLabel: 'Please enter your current password to confirm changes:',
+                    inputPlaceholder: 'Current password',
+                    inputAttributes: {
+                        autocapitalize: 'off',
+                        autocorrect: 'off'
+                    },
+                    showCancelButton: true,
+                    confirmButtonText: 'Continue',
+                    cancelButtonText: 'Cancel',
+                    confirmButtonColor: '#E50F0F',
+                    preConfirm: (password) => {
+                        if (!password) {
+                            Swal.showValidationMessage('Password is required');
+                        }
+                        return password;
+                    }
+                }).then((result) => {
+                    if (!result.isConfirmed) return;
+
+                    const current_password = result.value;
+                    const new_username = document.getElementById('new_username').value;
+                    const new_email = document.getElementById('new_email').value;
+                    const new_password = document.getElementById('new_password').value;
+                    const confirm_new_password = document.getElementById('confirm_new_password').value;
+
+                    // Confirm again that the user wants to proceed
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You will update your user data",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, save it!',
+                        cancelButtonText: 'No, thanks',
+                        confirmButtonColor: '#E50F0F'
+                    }).then((finalResult) => {
+                        if (finalResult.isConfirmed) {
+                            fetch('/user/update', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    current_password: current_password,
+                                    new_username: new_username,
+                                    new_email: new_email,
+                                    new_password: new_password,
+                                    confirm_new_password: confirm_new_password
+                                })
+                            })
+                                .then(async response => {
+                                    const message = await response.text();
+                                    if (!response.ok) {
+                                        throw new Error(message);
+                                    }
+                                    return message;
+                                })
+                                .then(message => {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Saved!',
+                                        text: message || 'Your account has been updated.',
+                                        confirmButtonColor: '#E50F0F'
+                                    }).then(() => {
+                                        window.location.href = "/logout";
+                                    });
+                                })
+                                .catch(error => {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error!',
+                                        text: error.message || 'Something went wrong.',
+                                        confirmButtonColor: '#E50F0F'
+                                    });
+                                });
+                        }
+                    });
+                });
+            });
+
+
+
+        });
+        /*]]>*/
+    </script>
+
+</head>
+<body>
+
+<div th:replace="~{fragments/preloader :: preloader}"></div>
+<header th:replace="~{fragments/header :: header}"></header>
+
+<main class="max-w-7xl mx-auto py-10 px-4 text-gray-900 shadow-xl m-4 p-6">
+    <h2 class="text-2xl mb-6">User favorites</h2>
+    <div class="mb-4 bg-gray-100 rounded-lg shadow p-4">
+        <a th:href="@{/favorites}" class="cursor-pointer text-lg font-medium flex items-center">
+            <!-- Icono de favoritos (estrella mejor definida) -->
+            <img class="mr-2" width="24" height="24" src="https://img.icons8.com/color/48/star--v1.png" alt="star--v1"/>
+            Favorites
+        </a>
+    </div>
+
+    <!-- Section 1: User Settings -->
+    <form th:action="@{/user/details}" method="post" class="mb-10">
+
+        <h2 class="text-2xl mb-6">User Settings</h2>
+
+        <details class="mb-4 bg-gray-100 rounded-lg shadow p-4">
+            <summary class="cursor-pointer text-lg font-medium w-full flex justify-between items-center">
+                Change Username
+                <span class="text-gray-400 ml-auto" th:text="${user_app.username}"></span>
+            </summary>
+            <div class="mt-4 space-y-2">
+                <input id="new_username" name="new_username" type="text" placeholder="New Username" class="w-full p-2 border rounded">
+            </div>
+
+        </details>
+
+        <details class="mb-4 bg-gray-100 rounded-lg shadow p-4">
+            <summary class="cursor-pointer text-lg font-medium w-full flex justify-between items-center">
+                Change Email
+                <span class="text-gray-400 ml-auto" th:text="${user_app.email}"></span>
+            </summary>
+            <div class="mt-4 space-y-2">
+                <input id="new_email" name="new_email" type="email" placeholder="New Email" class="w-full p-2 border rounded">
+            </div>
+
+        </details>
+
+        <details class="mb-4 bg-gray-100 rounded-lg shadow p-4">
+            <summary class="cursor-pointer text-lg font-medium flex">Change Password </summary>
+            <div class="mt-4 space-y-2">
+                <input id="new_password" name="new_password" type="password" placeholder="New Password" class="w-full p-2 border rounded">
+                <input id="confirm_new_password" name="confirm_new_password" type="password" placeholder="Confirm New Password"
+                       class="w-full p-2 border rounded">
+            </div>
+        </details>
+
+
+        <div class="mt-6 flex gap-4 justify-center items-center">
+            <button type="button"
+                    class="bg-[#E50F0F] hover:bg-red-700 text-white h-12 w-32 flex justify-center items-center"
+                    id="save-changes">
+                <span>Save Changes</span>
+            </button>
+            <button type="reset"
+                    class="relative h-12 w-32 flex justify-center items-center group border-2 border-black bg-white">
+                <span class="z-10">Discard Changes</span>
+                <div class="absolute bottom-0 left-0 h-1 w-full bg-[#E50F0F] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300 ease-in-out"></div>
+            </button>
+        </div>
+    </form>
+
+    <h2 class="text-2xl mb-6">Restricted Area</h2>
+    <details class="mb-4 bg-gray-100 rounded-lg shadow p-4">
+        <summary class="cursor-pointer text-lg font-medium text-yellow-500 flex items-center gap-2">
+            <img width="24" height="24" src="https://img.icons8.com/emoji/48/warning-emoji.png" alt="warning-emoji"/>
+            Delete Account
+        </summary>
+
+
+        <div class="mt-4">
+            <p class="text-yellow-500 mb-2">Warning: This action is irreversible.</p>
+            <button id="delete-account" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-700">Delete My
+                Account
+            </button>
+        </div>
+    </details>
+
+    <!-- Logout Button -->
+    <div class="flex justify-center items-center">
+        <a th:href="@{/logout}"
+           class="bg-[#E50F0F] hover:bg-red-700 text-white h-12 w-32 flex justify-center items-center">
+            <span>logout</span>
+        </a>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+
+</body>
+</html>

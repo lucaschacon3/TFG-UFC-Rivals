@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragments/head :: head}"></th:block>
+    <script>
+        function setRandomImages() {
+            const images = [
+                '../img/img1.webp',
+                '../img/img2.webp',
+                '../img/img3.webp',
+                '../img/img4.webp',
+                '../img/img5.webp',
+                '../img/img6.webp',
+                '../img/img7.webp',
+                '../img/img8.webp',
+                '../img/img9.webp',
+                '../img/img10.webp',
+                '../img/img11.webp',
+                '../img/img12.webp',
+                '../img/img13.webp',
+                '../img/img14.webp',
+
+
+            ];
+            const elements = document.querySelectorAll('.img_random');
+            const usedIndexes = new Set();
+
+            elements.forEach(el => {
+                let randomIndex;
+
+                // Buscar un índice que no se haya usado aún
+                do {
+                    randomIndex = Math.floor(Math.random() * images.length);
+                } while (usedIndexes.has(randomIndex) && usedIndexes.size < images.length);
+
+                usedIndexes.add(randomIndex);
+                el.style.backgroundImage = `url('${images[randomIndex]}')`;
+            });
+        }
+        window.addEventListener('load', setRandomImages);
+    </script>
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/preloader :: preloader}"></div>
+<div class="grid md:grid-rows-2 md:grid-cols-2 h-screen pb-12 gap-4 px-4">
+
+    <!-- Caja 1 - arriba sola -->
+    <div class="relative flex justify-center items-center md:col-span-2 h-full overflow-hidden">
+        <!-- Imagen desenfocada -->
+        <div class="absolute inset-0 z-0">
+            <div class="w-full h-full img_random"></div>
+        </div>
+        <!-- Contenido normal -->
+        <div class="relative z-10 flex justify-center items-center h-full">
+            <a class="bg-[#E50F0F] hover:bg-red-700 text-white h-12 w-32 flex justify-center items-center lg:h-16 lg:w-64 lg:text-lg" th:href="@{/ranking}">
+                <span>rankings</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Caja 2 - abajo izquierda -->
+    <div class="relative flex justify-center items-center h-full overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <div class="w-full h-full img_random"></div>
+        </div>
+        <div class="relative z-10 flex justify-center items-center h-full">
+            <a th:href="@{/fighters}"
+               class="relative h-12 w-32 flex justify-center items-center group border-2 border-black bg-white  lg:h-16 lg:w-64 md:text-lg">
+                <span class="z-10">fighters</span>
+                <div class="absolute bottom-0 left-0 h-1 w-full bg-[#E50F0F] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300 ease-in-out"></div>
+            </a>
+        </div>
+    </div>
+
+    <!-- Caja 3 - abajo derecha -->
+    <div class="relative flex justify-center items-center h-full overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <div class="w-full h-full img_random"></div>
+        </div>
+        <div class="relative z-10 flex justify-center items-center h-full">
+            <a th:href="@{/simulator}"
+               class="relative h-12 w-32 flex justify-center items-center group border-2 border-black bg-white  lg:h-16 lg:w-64 lg:text-lg">
+                <span class="z-10">simulator</span>
+                <div class="absolute bottom-0 left-0 h-1 w-full bg-[#E50F0F] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300 ease-in-out"></div>
+            </a>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

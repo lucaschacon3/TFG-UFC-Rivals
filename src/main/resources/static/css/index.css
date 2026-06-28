@@ -1,0 +1,49 @@
+@font-face {
+    font-family: 'Sonic Extra Bold';
+    src: url('../fonts/sonic-extra-bold-bt.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.sonic-text {
+    font-family: 'Sonic Extra Bold', sans-serif;
+}
+
+.koulen-font {
+
+    font-family: 'Koulen', sans-serif;
+}
+
+body {
+    font-family: 'Koulen', sans-serif;
+}
+
+.img_random {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+/*card flipper*/
+.flip-card {
+    perspective: 1000px;
+}
+
+.flip-card-inner {
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+    backface-visibility: hidden;
+}
+
+.flip-card-back {
+    transform: rotateY(180deg);
+}
+

@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;600&display=swap" rel="stylesheet">
+
+    <th:block th:replace="~{fragments/head :: head}"></th:block>
+    <script th:if="${fighter1 != null and fighter2 != null}" th:inline="javascript">
+        /*<![CDATA[*/
+        window.addEventListener('load', function () {
+
+            const fighter1Name = /*[[${fighter1.name}]]*/ 'Fighter1';
+            const fighter1Surname = /*[[${fighter1.surname}]]*/ 'Fighter 1';
+            const fighter2Name = /*[[${fighter2.name}]]*/ 'Fighter2';
+            const fighter2Surname = /*[[${fighter2.surname}]]*/ 'Fighter 1';
+
+            // Construye el prompt
+            const prompt = `Simulate a 3-round fight between ${fighter1Name} ${fighter1Surname} and ${fighter2Name} ${fighter2Surname}.
+            For each round, describe briefly the main actions (1-2 sentences).
+            At the end, name the winner.
+            Answer in English.`;
+
+            async function askOpenAI(prompt) {
+                // Mostrar loader
+                document.getElementById('loader').style.display = 'block';
+                document.getElementById('openai-result').innerText = '';
+
+                try {
+                    const response = await fetch('/api/openai/chat', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ prompt: prompt })
+                    });
+
+                    const text = await response.text();
+                    document.getElementById('openai-result').innerText = text;
+                } catch (error) {
+                    document.getElementById('openai-result').innerText = 'Error contacting OpenAI';
+                    console.error('OpenAI error:', error);
+                } finally {
+                    // Ocultar loader
+                    document.getElementById('loader').style.display = 'none';
+                }
+            }
+
+            askOpenAI(prompt);
+
+
+            const fighter1Label = /*[[${fighter1.nickname}]]*/ 'Fighter 1';
+            const fighter2Label = /*[[${fighter2.nickname}]]*/ 'Fighter 2';
+
+            const radarData = {
+                labels: [
+                    'Wins KO', 'Wins Sub', 'Wins Dec',
+                    'Losses KO', 'Losses Sub', 'Losses Dec',
+                    'Draws'
+                ],
+                datasets: [
+                    {
+                        label: fighter1Label,
+                        data: [
+                            /*[[${fighter1.wins_ko ?: 0}]]*/,
+                            /*[[${fighter1.wins_sub ?: 0}]]*/,
+                            /*[[${fighter1.wins_dec ?: 0}]]*/,
+                            /*[[${fighter1.losses_ko ?: 0}]]*/,
+                            /*[[${fighter1.losses_sub ?: 0}]]*/,
+                            /*[[${fighter1.losses_dec ?: 0}]]*/,
+                            /*[[${fighter1.total_draws ?: 0}]]*/
+                        ],
+                        backgroundColor: 'rgba(229, 15, 15, 0.2)',
+                        borderColor: 'rgba(229, 15, 15, 1)',
+                        borderWidth: 2
+                    },
+                    {
+                        label: fighter2Label,
+                        data: [
+                            /*[[${fighter2.wins_ko ?: 0}]]*/,
+                            /*[[${fighter2.wins_sub ?: 0}]]*/,
+                            /*[[${fighter2.wins_dec ?: 0}]]*/,
+                            /*[[${fighter2.losses_ko ?: 0}]]*/,
+                            /*[[${fighter2.losses_sub ?: 0}]]*/,
+                            /*[[${fighter2.losses_dec ?: 0}]]*/,
+                            /*[[${fighter2.total_draws ?: 0}]]*/
+                        ],
+                        backgroundColor: 'rgba(8, 62, 124, 0.2)',
+                        borderColor: 'rgb(15,117,227)',
+                        borderWidth: 2
+                    }
+                ]
+            };
+
+            const config = {
+                type: 'radar',
+                data: radarData,
+                options: {
+                    responsive: true,
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            suggestedMax: 12
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        }
+                    }
+                }
+            };
+
+            new Chart(document.getElementById('fighterRadarChart'), config);
+
+            const id_user_app = /*[[${id_user_app ?: 1}]]*/ 'Id user'
+            const id_fighter1 = /*[[${fighter1.id_fighter ?: 0}]]*/ 'Id Fighter 1'
+            const id_fighter2 = /*[[${fighter2.id_fighter ?: 0}]]*/ 'Id Fighter 2'
+            const percent1Input = document.getElementById("percent1");
+            const percent2Input = document.getElementById("percent2");
+            const date_fight = new Date().toISOString().split('T')[0];
+
+            const percent1 = percent1Input && !isNaN(parseFloat(percent1Input.value))
+                ? parseFloat(percent1Input.value).toFixed(2)
+                : 50;
+
+            const percent2 = percent2Input && !isNaN(parseFloat(percent2Input.value))
+                ? parseFloat(percent2Input.value).toFixed(2)
+                : 50;
+
+
+            // Ahora puedes usar percent1 y percent2 con valores seguros
+
+
+            document.getElementById('saveFightBtn').addEventListener('click', () => {
+                // Evento cuando el botón es presionado
+                Swal.fire({
+                    title: 'Save this fight?',
+                    text: 'Would you like to save this fight?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#E50F0F',
+                    cancelButtonColor: '#96979a',
+                    confirmButtonText: 'Yes, save it!',
+                    cancelButtonText: 'No, thanks',
+                    customClass: {
+                        popup: 'rounded-2xl',
+                        title: 'text-lg ',
+                        confirmButton: 'px-4 py-2',
+                        cancelButton: 'px-4 py-2',
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Si el usuario confirma, realiza la acción con fetch
+
+                        fetch('/simulator/save', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                id_user: id_user_app,
+                                id_fighter1: id_fighter1,
+                                id_fighter2: id_fighter2,
+                                percentage_f1: percent1,
+                                percentage_f2: percent2,
+                                date_fight: date_fight
+                            })
+                        })
+                            .then(response => {
+                                if (!response.ok) throw new Error("Network error")
+                                const btn = document.getElementById('saveFightBtn')
+                                btn.innerText = "saved";
+                                btn.classList.add("text-gray-300", "border-gray-300");
+                                btn.disabled = true;
+                                return response.text();
+
+
+                            })
+                            .then(() => {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Saved!',
+                                    text: 'This fight has been saved.',
+                                    confirmButtonColor: '#E50F0F'
+                                });
+                            })
+                            .catch(error => {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error!',
+                                    text: 'Failed to save the fight.',
+                                    confirmButtonColor: '#E50F0F'
+                                });
+                            });
+                    }
+                });
+            });
+
+        });
+
+        /*]]>*/
+    </script>
+
+
+</head>
+<script>
+    // Se ejecuta solo cuando todo el DOM esté listo
+    document.addEventListener('DOMContentLoaded', function () {
+        const fighter1Select = document.getElementById('fighter1Select');
+        const fighter2Select = document.getElementById('fighter2Select');
+
+        function updateFighter2Options() {
+            const fighter1Id = fighter1Select.value;
+            const options = fighter2Select.querySelectorAll('option');
+
+            options.forEach(option => {
+                option.disabled = false;
+            });
+
+            options.forEach(option => {
+                if (option.value === fighter1Id) {
+                    option.disabled = true;
+                }
+            });
+        }
+
+        // Ahora sí, solo se añade el listener cuando está todo cargado
+        fighter1Select.addEventListener('change', updateFighter2Options);
+    });
+</script>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/preloader :: preloader}"></div>
+
+
+<div class=" flex flex-col items-center justify-start px-4 py-8">
+
+    <!-- Formulario de selección -->
+    <form method="get" action="#" class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
+        <!-- Select para categorías -->
+        <div class="w-full mb-4 md:w-1/4">
+            <select name="category"
+                    class="px-4 pr-8 py-2 border w-full h-12 truncate whitespace-nowrap"
+                    onchange="this.form.submit()">
+                <option value="" disabled selected th:text="${category_selected}">select category</option>
+                <option th:value="${'Flyweight'}">Flyweight</option>
+                <option th:value="${'Bantamweight'}">Bantamweight</option>
+                <option th:value="${'Featherweight'}">Featherweight</option>
+                <option th:value="${'Lightweight'}">Lightweight</option>
+                <option th:value="${'Welterweight'}">Welterweight</option>
+                <option th:value="${'Middleweight'}">Middleweight</option>
+                <option th:value="${'Light Heavyweight'}">Light Heavyweight</option>
+                <option th:value="${'Heavyweight'}">Heavyweight</option>
+            </select>
+        </div>
+
+        <!-- Select para peleador 1 -->
+        <div class="w-full mb-4 md:w-1/4">
+            <select name="fighter1Id"
+                    class="px-4 pr-8 py-2 border w-full h-12 truncate whitespace-nowrap"
+                    required th:attr="disabled=${category_selected == 'select category'}"
+                    id="fighter1Select">
+                <option value="" disabled selected>select fighter</option>
+                <option th:each="fighter : ${fighters}"
+                        th:value="${fighter.id_fighter}"
+                        th:text="|${fighter.name} ${fighter.surname}|"></option>
+            </select>
+        </div>
+
+        <!-- Select para peleador 2 -->
+        <div class="w-full mb-4 md:w-1/4">
+            <select name="fighter2Id"
+                    class="px-4 pr-8 py-2 border w-full h-12 truncate whitespace-nowrap"
+                    required th:attr="disabled=${category_selected == 'select category'}"
+                    id="fighter2Select">
+                <option value="" disabled selected>select fighter</option>
+                <option th:each="fighter : ${fighters}"
+                        th:value="${fighter.id_fighter}"
+                        th:text="|${fighter.name} ${fighter.surname}|"></option>
+            </select>
+        </div>
+
+        <!-- Botón de luchar -->
+        <div class="w-full mb-4 md:w-1/4">
+            <button type="submit"
+                    class="w-full h-12 bg-[#E50F0F] hover:bg-red-700 text-white px-4 py-2">
+                fight
+            </button>
+        </div>
+    </form>
+    <div th:if="${fighter1 == null && fighter2 == null}" class="mt-16 mb-16">
+        <img src="../img/waiting_fight.gif" alt="">
+    </div>
+    <!-- Comparación de peleadores -->
+    <div th:if="${fighter1 != null && fighter2 != null}" class="bg-white p-6 shadow-xl w-full max-w-6xl">
+        <h2 class="text-2xl mb-6 text-center">Fighter Comparison</h2>
+
+        <div class="flex flex-col md:flex-row gap-8">
+            <!-- Fighter 1 -->
+            <div class="w-full md:w-1/2 text-center border-2 border-gray p-4">
+                <img th:src="@{${fighter1.image}}" alt="Fighter 1 Image"
+                     class="w-48 h-70 object-cover mb-4 mx-auto block"/>
+                <h3 class="text-xl" th:text="${fighter1.nickname}"></h3>
+                <p th:text="${fighter1.name + ' ' + fighter1.surname}"></p>
+                <p th:text="'Weight: ' + ${fighter1.weight} + ' lbs'"></p>
+            </div>
+
+            <div class="flex items-center justify-center">
+                <h1 class="text-[#E50F0F] text-center text-4xl">VS</h1>
+            </div>
+
+            <!-- Fighter 2 -->
+            <div class="w-full md:w-1/2 text-center border-2 border-gray p-4">
+                <img th:src="@{${fighter2.image}}" alt="Fighter 1 Image"
+                     class="w-48 h-70 object-cover mb-4 mx-auto block"/>
+                <h3 class="text-xl" th:text="${fighter2.nickname}"></h3>
+                <p th:text="${fighter2.name + ' ' + fighter2.surname}"></p>
+                <p th:text="'Weight: ' + ${fighter2.weight} + ' lbs'"></p>
+            </div>
+
+        </div>
+
+        <!-- Comparison Table -->
+        <div class="mt-8">
+            <table class="w-full text-center table-fixed border-collapse">
+                <thead>
+                <tr class="bg-gray-100">
+                    <th class="py-2 font-normal">Attribute</th>
+                    <th class="py-2 font-normal text-[#E50F0F]"
+                        th:text="${fighter1.name} + ' ' + ${fighter1.surname}"></th>
+                    <th class="py-2 font-normal text-blue-500"
+                        th:text="${fighter2.name} + ' ' + ${fighter2.surname}"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Age</td>
+                    <td th:class="${fighter1.age < fighter2.age ? 'text-[#00cc66]' : ''}"
+                        th:text="${fighter1.age}"></td>
+                    <td th:class="${fighter2.age < fighter1.age ? 'text-[#00cc66]' : ''}"
+                        th:text="${fighter2.age}"></td>
+                </tr>
+                <tr>
+                    <td>Height</td>
+                    <td th:class="${fighter1.height > fighter2.height ? 'text-[#00cc66]' : ''}"
+                        th:text="${fighter1.height + ' ft'}"></td>
+                    <td th:class="${fighter2.height > fighter1.height ? 'text-[#00cc66]' : ''}"
+                        th:text="${fighter2.height + ' ft'}"></td>
+                </tr>
+                <tr>
+                    <td>Reach</td>
+                    <td th:class="${fighter1.reach > fighter2.reach ? 'text-[#00cc66]' : ''}"
+                        th:text="${fighter1.reach + ' in'}"></td>
+                    <td th:class="${fighter2.reach > fighter1.reach ? 'text-[#00cc66]' : ''}"
+                        th:text="${fighter2.reach + ' in'}"></td>
+                </tr>
+                <tr>
+                    <td>Total Fights</td>
+                    <td th:class="${fighter1.total_fights > fighter2.total_fights ? 'text-[#00cc66]' : ''}"
+                        th:text="${fighter1.total_fights}"></td>
+                    <td th:class="${fighter2.total_fights > fighter1.total_fights ? 'text-[#00cc66]' : ''}"
+                        th:text="${fighter2.total_fights}"></td>
+                </tr>
+                <tr>
+                    <td>Wins</td>
+                    <td th:class="${fighter1.total_wins > fighter2.total_wins ? 'text-[#00cc66]' : ''}"
+                        th:text="${fighter1.total_wins}"></td>
+                    <td th:class="${fighter2.total_wins > fighter1.total_wins ? 'text-[#00cc66]' : ''}"
+                        th:text="${fighter2.total_wins}"></td>
+                </tr>
+                <tr>
+                    <td>Losses</td>
+                    <td th:class="${fighter1.total_losses < fighter2.total_losses ? 'text-[#00cc66]' : ''}"
+                        th:text="${fighter1.total_losses}"></td>
+                    <td th:class="${fighter2.total_losses < fighter1.total_losses ? 'text-[#00cc66]' : ''}"
+                        th:text="${fighter2.total_losses}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="w-full max-w-xl mx-auto mt-10" th:if="${fighter1 != null and fighter2 != null}">
+            <canvas id="fighterRadarChart"></canvas>
+        </div>
+
+
+        <!-- Win Probability Bar -->
+        <div class="mt-8 text-center" th:if="${fighter1.total_fights > 0 and fighter2.total_fights > 0}">
+            <h3 class="text-xl mb-2">Estimated Win Probability</h3>
+
+            <th:block th:with="p1Score=${fighter1.total_wins * 1.0},
+            p2Score=${fighter2.total_wins * 1.0},
+            total=${p1Score + p2Score},
+            percent1=${total > 0 ? (p1Score * 100 / total) : 50},
+            percent2=${100 - percent1}">
+
+                <div class="w-full bg-gray-300 h-6 rounded-full overflow-hidden flex">
+                    <div class="bg-[#E50F0F] h-full text-white text-sm flex items-center justify-center"
+                         th:style="'width:' + ${percent1} + '%'">
+                        <span th:text="${#numbers.formatDecimal(percent1, 2, 2)} + '%'"></span>
+                    </div>
+                    <div class="bg-blue-500 h-full text-white text-sm flex items-center justify-center"
+                         th:style="'width:' + ${percent2} + '%'">
+                        <span th:text="${#numbers.formatDecimal(percent2, 2, 2)} + '%'"></span>
+                    </div>
+                </div>
+
+                <div>
+                    <input type="hidden" th:value="${percent1}" id="percent1">
+                    <input type="hidden" th:value="${percent2}" id="percent2">
+                </div>
+
+                <p class="mt-2">
+                    <span th:text="${fighter1.name} + ' ' + ${fighter1.surname}" class="text-[#E50F0F]"></span> vs
+                    <span th:text="${fighter2.name} + ' ' + ${fighter2.surname}" class="text-blue-500"></span>
+                </p>
+
+                <div class="relative mt-8 mb-8 p-[3px] rounded-xl overflow-hidden
+                        bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-400">
+                    <div class="rounded-xl bg-white p-8">
+                        <h2 class="text-center text-4xl font-extrabold
+                            bg-gradient-to-r from-fuchsia-600 via-pink-500 to-purple-600
+                            bg-clip-text text-transparent">
+                            Rivals AI
+                        </h2>
+                        <div id="loader-wrapper" class="flex justify-center items-center">
+                            <div id="loader" style="display: none;">
+                                <img src="/img/loader_ai.gif" height="100" width="100" alt="Loading..." />
+                            </div>
+                        </div>
+
+                        <p class="mt-4 text-center text-gray-600" id="openai-result"></p>
+                    </div>
+                </div>
+
+            </th:block>
+        </div>
+
+
+        <div class="flex justify-center items-center mt-8">
+            <button
+                    id="saveFightBtn"
+                    class="relative h-12 w-40 flex justify-center items-center group border-2 border-black bg-white"
+            >
+                <span class="z-10 text-green-600 text-xl">Save Fight</span>
+                <div class="absolute bottom-0 left-0 h-1 w-full bg-green-600 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300 ease-in-out"></div>
+            </button>
+        </div>
+
+    </div>
+
+
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

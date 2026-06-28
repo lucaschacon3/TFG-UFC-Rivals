@@ -1,0 +1,25 @@
+<!-- fragments/head.html -->
+<th:block th:fragment="head">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UFC Rivals</title>
+
+    <!--<script src="https://cdn.tailwindcss.com"></script>-->
+    <script th:src="@{/js/tailwind.js}"></script>
+
+    <!--<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>-->
+    <script th:src="@{/js/chart.js}"></script>
+
+    <!--<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>-->
+    <script th:src="@{/js/sweetalert2.js}"></script>
+
+    <script th:src="@{/js/comun.js}"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Koulen&display=swap" rel="stylesheet">
+
+    <link rel="shortcut icon" th:href="@{/logos/window_icon.png}" />
+
+    <!-- CSS personalizado -->
+    <link rel="stylesheet" th:href="@{/css/index.css}" />
+</th:block>

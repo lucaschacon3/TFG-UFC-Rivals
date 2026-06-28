@@ -1,0 +1,23 @@
+<div th:fragment="footer">
+    <div class="w-full shadow-md shadow-gray-400 h-64 flex flex-col md:flex-row items-center md:justify-center bg-black justify-center ">
+        <div class="md:w-1/5 w-full flex justify-center">
+            <a th:href="@{/}">
+                <h1 class="sonic-text text-center text-5xl text-white w-32">
+                    UFC <span class="text-sm text-gray-500 flex justify-center">Rivals</span>
+                </h1>
+            </a>
+        </div>
+        <div class="md:w-4/5 w-full text-center">
+            <h1 class="koulen-font text-white text-2xl m-8" id="random_phrases"></h1>
+        </div>
+
+    </div>
+    <div class="bg-black flex justify-center items-center shadow-md shadow-gray-400">
+        <p class="text-white ml-4">© 2025 UFC Rivals. All rights reserved. <a class="text-white w-1/5 underline" th:href="@{/privacy}">privacy policy</a></p>
+
+    </div>
+
+
+</div>
+
+

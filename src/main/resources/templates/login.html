@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <th:block th:replace="~{fragments/head :: head}"></th:block>
+    <script>
+        function setRandomImages() {
+            const images = [
+                '../img/img1.webp',
+                '../img/img2.webp',
+                '../img/img3.webp',
+                '../img/img4.webp',
+                '../img/img5.webp',
+                '../img/img6.webp',
+                '../img/img7.webp',
+                '../img/img8.webp',
+                '../img/img9.webp',
+                '../img/img10.webp',
+                '../img/img11.webp',
+                '../img/img12.webp',
+                '../img/img13.webp',
+                '../img/img14.webp',
+
+
+            ];
+            const elements = document.querySelectorAll('.img_random');
+            const usedIndexes = new Set();
+
+            elements.forEach(el => {
+                let randomIndex;
+
+                // Buscar un índice que no se haya usado aún
+                do {
+                    randomIndex = Math.floor(Math.random() * images.length);
+                } while (usedIndexes.has(randomIndex) && usedIndexes.size < images.length);
+
+                usedIndexes.add(randomIndex);
+                el.style.backgroundImage = `url('${images[randomIndex]}')`;
+            });
+        }
+        window.addEventListener('load', setRandomImages);
+    </script>
+</head>
+<body>
+
+<!-- Encabezado -->
+<div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/preloader :: preloader}"></div>
+
+<main class="overflow-hidden relative w-full h-full flex justify-center items-center py-12 px-4 sm:py-24 sm:px-24 mt-8 mb-12 sm:mt-16 sm:mb-16">
+    <!-- Imagen desenfocada -->
+    <div class="absolute inset-0 z-0">
+        <div class="w-full h-full img_random blur-sm"></div>
+    </div>
+
+    <!-- Caja de login -->
+    <div class="bg-white p-8 shadow-lg w-full max-w-full sm:max-w-md md:max-w-sm mx-2 sm:mx-auto relative z-10">
+        <h2 class="text-2xl text-center mb-6">Login</h2>
+        <div th:if="${param.error}" class="w-full mx-auto mt-6 mb-8">
+            <div class="flex items-center bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded shadow"
+                 role="alert">
+                <svg class="fill-current w-5 h-5 mr-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                    <path d="M10 15a1.5 1.5 0 110 3 1.5 1.5 0 010-3zm0-12a1 1 0 011 1v8a1 1 0 01-2 0V4a1 1 0 011-1z"/>
+                </svg>
+                <p class="text-sm">Invalid username or password</p>
+            </div>
+        </div>
+        <a href="/oauth2/authorization/google"
+           class="flex items-center justify-center gap-2 border border-gray-300 rounded px-4 py-2 mb-6 hover:shadow-md hover:bg-gray-50 transition-colors">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google icon" class="w-5 h-5">
+            <span class="text-sm text-gray-700 font-medium">Sign in with Google</span>
+        </a>
+
+        <form action="/login" method="post">
+            <div class="mb-4 ">
+                <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                <input type="text" id="username" name="username"
+                       class="w-full mt-1 p-2 border border-gray-300 rounded-md" required>
+            </div>
+            <div class="mb-6">
+                <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                <input type="password" id="password" name="password"
+                       class="w-full mt-1 p-2 border border-gray-300 rounded-md" required>
+            </div>
+
+            <div class="flex items-center justify-between">
+                <button type="submit" class="bg-red-600 text-white px-4 py-2 hover:bg-red-700">Login</button>
+                <a href="/register" class="text-sm text-red-600 hover:underline">I don’t have an account</a>
+            </div>
+        </form>
+    </div>
+</main>
+
+
+<!-- Pie de página -->
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

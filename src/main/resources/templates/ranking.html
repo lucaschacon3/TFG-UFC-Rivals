@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragments/head :: head}"></th:block>
+    <script>
+        function rankingToggle() {
+            const toggleBtn = document.getElementById('toggle-btn');
+            let expanded = false;
+
+            toggleBtn.addEventListener('click', function () {
+                const extras = document.querySelectorAll('.extra-fighter');
+                expanded = !expanded;
+
+                extras.forEach(el => {
+                    el.classList.toggle('hidden', !expanded);
+                });
+
+                this.textContent = expanded ? 'see less' : 'see more';
+
+                if (!expanded) {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+        }
+        window.addEventListener('load', rankingToggle);
+    </script>
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/preloader :: preloader}"></div>
+
+<!-- 💡 Margins added here -->
+
+<div class="min-h-screen flex flex-col items-center justify-start px-4 py-8">
+    <div class="w-full max-w-7xl space-y-6 bg-white p-6 shadow-2xl">
+
+        <div th:each="fighter, iterStat : ${fighters}">
+            <details
+                    th:class="${iterStat.index < 9} ? 'w-full bg-gray-100 shadow-md p-4' : 'w-full bg-gray-100 shadow-md p-4 extra-fighter hidden'"
+                    th:attr="open=${iterStat.index == 0}">
+                <summary class="text-xl cursor-pointer">
+                    <!-- Puedes usar un div interno para alinear si hace falta -->
+                    <span th:text="${fighter.ranking} + '. ' + ${fighter.name} + ' ' + ${fighter.surname}"></span>
+                </summary>
+
+                <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+                    <img th:src="@{${fighter.image}}" alt="Fighter Image"
+                         class="w-full max-w-xs rounded-xl mx-auto">
+
+                    <div class="space-y-2 text-lg flex flex-col items-center text-center text-gray-700">
+                        <p>Wins: <span class="text-green-500" th:text="${fighter.total_wins}"></span></p>
+                        <p>Losses: <span class="text-red-500" th:text="${fighter.total_losses}"></span></p>
+                        <p>Draws: <span class="text-yellow-500" th:text="${fighter.total_draws}"></span></p>
+                        <p>Fights: <span class="text-black" th:text="${fighter.total_fights}"></span></p>
+                        <p class="text-blue-600">
+                            Victory percentage:
+                            <span th:text="${(fighter.total_fights > 0) ? (fighter.total_wins * 100 / fighter.total_fights) + '%' : 'N/A'}"></span>
+                        </p>
+                    </div>
+
+                </div>
+            </details>
+
+
+        </div>
+
+        <div class="text-center">
+            <button id="toggle-btn"
+                    class="bg-[#E50F0F] hover:bg-red-700 text-white px-6 py-2 transition">
+                see more
+            </button>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

@@ -3,7 +3,7 @@
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.4.4-green.svg)
 ![Docker](https://img.shields.io/badge/Docker-Compose-blue.svg)
 
-# 🥊 UFC Rivals
+# UFC Rivals
 
 **Full Stack Web App — Proyecto Final de Ciclo Formativo**
 
@@ -11,7 +11,7 @@ Plataforma web para el análisis y simulación de peleas de UFC, impulsada por i
 
 ---
 
-## 📑 Índice
+## Índice
 
 1. [Capturas de pantalla](#-capturas-de-pantalla)
 2. [Características principales](#-características-principales)
@@ -25,25 +25,26 @@ Plataforma web para el análisis y simulación de peleas de UFC, impulsada por i
 10. [Seguridad](#-seguridad)
 11. [Arquitectura Docker](#-arquitectura-docker)
 12. [Personalización](#-personalización)
-13. [Licencia](#-licencia)
 
 ---
 
-## 📸 Capturas de pantalla
+## Capturas de pantalla
 
 | Home | Fighters |
 |:---:|:---:|
-| *(captura pendiente)* | *(captura pendiente)* |
-| **Simulator** | **Ranking** |
-| *(captura pendiente)* | *(captura pendiente)* |
+| ![alt text](docs/2.png) | ![alt text](docs/2.png) |
+
+| Simulator | Ranking |
+|:---:|:---:|
+| ![alt text](docs/10.png) | ![alt text](docs/4.png) |
 
 | Login / Register | User / Favorites |
 |:---:|:---:|
-| *(captura pendiente)* | *(captura pendiente)* |
+| ![alt text](docs/5.png) | ![alt text](docs/6.png) |
 
 ---
 
-## 🚀 Características principales
+## Características principales
 
 - **Arquitectura MVC con Thymeleaf** para renderizado dinámico del lado del servidor.
 - **Autenticación segura** con Spring Security (form login clásico, contraseñas cifradas con BCrypt).
@@ -58,7 +59,7 @@ Plataforma web para el análisis y simulación de peleas de UFC, impulsada por i
 
 ---
 
-## 🛠️ Stack tecnológico
+## Stack tecnológico
 
 | Capa | Tecnologías |
 |------|------------|
@@ -74,7 +75,7 @@ Plataforma web para el análisis y simulación de peleas de UFC, impulsada por i
 
 ---
 
-## 📂 Estructura del proyecto
+## Estructura del proyecto
 
 ```
 TFG-UFC-Rivals/
@@ -83,7 +84,7 @@ TFG-UFC-Rivals/
 ├── pom.xml
 ├── mvnw / mvnw.cmd               # Maven Wrapper
 ├── db/
-│   └── init.sql                  # Schema + seed data (cargado por PostgreSQL al iniciar)
+│   └── init.sql                  # Schema + seed data (cargado por PostgreSQL)
 │
 ├── src/main/java/com/example/web/
 │   ├── WebApplication.java
@@ -117,16 +118,16 @@ TFG-UFC-Rivals/
 │       └── OllamaClientService.java
 │
 ├── src/main/resources/
-│   ├── application.properties           # Configuración principal (PostgreSQL + Ollama)
+│   ├── application.properties          
 │   ├── static/
 │   │   ├── css/index.css
 │   │   ├── fonts/sonic-extra-bold-bt.ttf
-│   │   ├── img/              # 14 fondos webp + loader_ai.gif + waiting_fight.gif + 404_boxing.gif
+│   │   ├── img/              
 │   │   ├── js/
 │   │   │   ├── comun.js                 # JS propio (preloader, menú, frases)
-│   │   │   ├── chart.js                 # Chart.js (vendored)
-│   │   │   ├── sweetalert2.js           # SweetAlert2 (vendored)
-│   │   │   └── tailwind.js              # Tailwind CSS (vendored)
+│   │   │   ├── chart.js                 # Chart.js
+│   │   │   ├── sweetalert2.js           # SweetAlert2
+│   │   │   └── tailwind.js              # Tailwind CSS
 │   │   └── logos/
 │   │       ├── ufc_rivals_logo.svg
 │   │       ├── ufc_rivals_blanco_logo.svg
@@ -158,7 +159,7 @@ TFG-UFC-Rivals/
 
 ---
 
-## ⚙️ Guía de instalación
+## Guía de instalación
 
 ### Prerrequisitos
 
@@ -207,7 +208,7 @@ http://localhost:8080
 
 ---
 
-## 🔧 Configuración
+## Configuración
 
 ### Variables de entorno
 
@@ -223,13 +224,14 @@ Todas tienen valores por defecto funcionales para Docker. No es necesario crear 
 
 ---
 
-## 🖥️ Recorrido por las páginas
+## Recorrido por las páginas
 
 ### 1. Home (`/`)
 
 | |
 |:---:|
-| *(captura pendiente)* |
+| ![alt text](docs/1.png) |
+| ![alt text](docs/7.png) |
 
 Página de aterrizaje con tres tarjetas enlazando a las secciones principales: **Rankings**, **Fighters** y **Simulator**. El fondo cambia aleatoriamente entre 14 imágenes de UFC. Incluye el header con navegación y el footer con frases aleatorias sobre lucha.
 
@@ -241,7 +243,7 @@ Página de aterrizaje con tres tarjetas enlazando a las secciones principales: *
 
 | Login | Register |
 |:---:|:---:|
-| *(captura pendiente)* | *(captura pendiente)* |
+| ![alt text](docs/5.png) | ![alt text](docs/8.png) |
 
 Formularios de inicio de sesión y registro.
 
@@ -256,7 +258,8 @@ Formularios de inicio de sesión y registro.
 
 | |
 |:---:|
-| *(captura pendiente)* |
+| ![alt text](docs/2.png) |
+| ![alt text](docs/9.png) |
 
 Listado paginado de todos los luchadores con:
 
@@ -273,7 +276,10 @@ Listado paginado de todos los luchadores con:
 
 | |
 |:---:|
-| *(captura pendiente)* |
+| ![alt text](docs/3.png) |
+| ![alt text](docs/10.png) |
+| ![alt text](docs/11.png) |
+| ![alt text](docs/12.png) |
 
 La página principal de la aplicación. Permite:
 
@@ -294,9 +300,10 @@ La página principal de la aplicación. Permite:
 
 | |
 |:---:|
-| *(captura pendiente)* |
+| ![alt text](docs/4.png) |
+| ![alt text](docs/13.png) |
 
-Ranking top 15 de luchadores en diseño acordeón. Cada posición se puede expandir para ver los detalles completos. Incluye medallas para los 3 primeros puestos (🥇🥈🥉).
+Ranking top 15 de luchadores en diseño acordeón. Cada posición se puede expandir para ver los detalles completos. Incluye medallas para los 3 primeros puestos.
 
 **Controller:** `RankingController.java` — método `ranking()`.
 
@@ -306,7 +313,11 @@ Ranking top 15 de luchadores en diseño acordeón. Cada posición se puede expan
 
 | |
 |:---:|
-| *(captura pendiente)* |
+| ![alt text](docs/14.png) |
+| ![alt text](docs/15.png) |
+| ![alt text](docs/16.png) |
+| ![alt text](docs/6.png) |
+| ![alt text](docs/17.png) |
 
 Panel personal del usuario autenticado que muestra:
 
@@ -321,7 +332,8 @@ Panel personal del usuario autenticado que muestra:
 
 | |
 |:---:|
-| *(captura pendiente)* |
+| ![alt text](docs/6.png) |
+| ![alt text](docs/18.png) |
 
 Página de configuración de cuenta. Requiere contraseña actual para cualquier cambio:
 
@@ -338,7 +350,7 @@ Página de configuración de cuenta. Requiere contraseña actual para cualquier 
 
 | 404 Not Found | 500 Internal Error |
 |:---:|:---:|
-| *(captura pendiente)* | *(captura pendiente)* |
+| ![alt text](docs/19.png) | ![alt text](docs/20.png) |
 
 Páginas personalizadas para errores HTTP. La 404 incluye un GIF de boxeo animado.
 
@@ -350,9 +362,12 @@ Páginas personalizadas para errores HTTP. La 404 incluye un GIF de boxeo animad
 
 Página estática con la política de privacidad de la aplicación.
 
+| Privacy |
+|:---:|
+![alt text](docs/21.png)
 ---
 
-## 🌐 API REST
+## API REST
 
 ### `POST /api/ai/chat`
 
@@ -362,7 +377,7 @@ Endpoint para obtener una simulación narrativa de pelea desde el modelo de Olla
 
 ```json
 {
-  "prompt": "Generate a round-by-round simulation of the fight between Islam Makhachev and Ilia Topuria..."
+  "prompt": "Generate a round-by-round simulation of the fight between Alexander Volkanovski and Diego Lopes..."
 }
 ```
 
@@ -370,9 +385,9 @@ Endpoint para obtener una simulación narrativa de pelea desde el modelo de Olla
 
 ```text
 Round 1: Both fighters start cautiously...
-Round 2: Makhachev lands a takedown...
+Round 2: Diego Lopes lands a takedown...
 ...
-Winner: Islam Makhachev by unanimous decision
+Winner: Alexander Volkanovski by unanimous decision
 ```
 
 **Response (500):**
@@ -388,7 +403,7 @@ El servicio construye un prompt de sistema y llama a la API `/api/chat` de Ollam
 
 ---
 
-## 🗄️ Base de datos
+## Base de datos
 
 ### Esquema (4 tablas)
 
@@ -405,12 +420,12 @@ El servicio construye un prompt de sistema y llama a la API `/api/chat` de Ollam
        │  ┌──────────────────────┐   │
        │  │      fav_fight       │   │
        │  ├──────────────────────┤   │
-       └──┤ id_user_app (FK)    │   │
-          │ id_fighter1 (FK)    ├───┘
-          │ id_fighter2 (FK)    │
-          │ percentage_f1       │
-          │ percentage_f2       │
-          │ date_fight          │
+       └──┤ id_user_app (FK)     │   │
+          │ id_fighter1 (FK)     ├───┘
+          │ id_fighter2 (FK)     │
+          │ percentage_f1        │
+          │ percentage_f2        │
+          │ date_fight           │
           └──────────────────────┘
 
 ┌─────────────────────────────────────────┐
@@ -454,7 +469,7 @@ El proyecto usa **Spring Data JDBC** con `JdbcClient` (consultas SQL manuales ma
 
 ---
 
-## 🔒 Seguridad
+## Seguridad
 
 - **Form login clásico** con Spring Security.
 - **Contraseñas cifradas** con `BCryptPasswordEncoder`.
@@ -465,38 +480,38 @@ El proyecto usa **Spring Data JDBC** con `JdbcClient` (consultas SQL manuales ma
 
 ---
 
-## 🐳 Arquitectura Docker
+## Arquitectura Docker
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                    docker-compose.yml                     │
+┌──────────────────────────────────────────────────────────┐
+│                    docker-compose.yml                    │
 │                                                          │
 │  ┌──────────────┐    ┌──────────────┐                    │
 │  │     db       │    │   ollama     │                    │
 │  │ PostgreSQL 16│    │ ollama/ol.   │                    │
 │  │ port: (int.) │    │ port: (int.) │                    │
-│  │ healthcheck ◄────► healthcheck  │                    │
+│  │ healthcheck ◄────► healthcheck   │                    │
 │  └──────┬───────┘    └──────┬───────┘                    │
 │         │                   │                            │
 │         │    ┌──────────────────┐                        │
 │         │    │  ollama-init     │                        │
 │         │    │ curlimages/curl  │                        │
 │         │    │ curl POST /pull  │                        │
-│         │    │ llama3.2:3b     │                        │
+│         │    │ llama3.2:3b      │                        │
 │         │    └────────┬─────────┘                        │
 │         │             │ (exited when done)               │
 │         │             │                                  │
 │         │    ┌──────────────────┐                        │
-│         └────┤      app        │                        │
-│              │  Spring Boot    │                        │
-│              │  port: 8080     │◄── host: localhost:8080 │
-│              │  OLLAMA_API_URL │                        │
-│              │  =http://ollama │                        │
-│              │  :11434         │                        │
+│         └────┤      app         │                        │
+│              │  Spring Boot     │                        │
+│              │  port: 8080      │◄── host: localhost:8080│
+│              │  OLLAMA_API_URL  │                        │
+│              │  =http://ollama  │                        │
+│              │  :11434          │                        │
 │              └──────────────────┘                        │
 │                                                          │
 │  Volúmenes:  pg_data  │  ollama_data                     │
-└─────────────────────────────────────────────────────────┘
+└──────────────────────────────────────────────────────────┘
 ```
 
 ### Servicios
@@ -522,8 +537,3 @@ El modelo de IA se descarga automáticamente en `ollama-init`. Para cambiarlo, e
 
 Edita `db/init.sql` y añade nuevas filas al `INSERT INTO fighter (...) ... ON CONFLICT (id_fighter) DO NOTHING`. Los datos se cargan la primera vez que se inicia PostgreSQL con un volumen vacío. Si ya existen, elimina el volumen con `docker compose down -v`.
 
----
-
-## 📄 Licencia
-
-Este proyecto está bajo la licencia MIT.
